@@ -20,7 +20,7 @@ namespace Practice.API.Common
             if (string.IsNullOrEmpty(base64EncodeData)) return "";
             var base64EncodeBytes=Convert.FromBase64String(base64EncodeData);
             var result=Encoding.UTF8.GetString(base64EncodeBytes);
-            result=result.Substring(0, result.Length-1);
+            result=result.Substring(0, result.Length-7);
             return result;
         }
 

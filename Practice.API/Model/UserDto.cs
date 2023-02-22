@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Practice.API.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Practice.API.Model
 {
@@ -14,5 +15,6 @@ namespace Practice.API.Model
 
         public string Mobile { get; set; }
         
+        public UserRoles userRoles { get; set; }
     }
 }

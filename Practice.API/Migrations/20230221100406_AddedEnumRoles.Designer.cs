@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Practice.API.DbContexts;
 
@@ -10,9 +11,10 @@ using Practice.API.DbContexts;
 namespace Practice.API.Migrations
 {
     [DbContext(typeof(InfoContext))]
-    partial class InfoContextModelSnapshot : ModelSnapshot
+    [Migration("20230221100406_AddedEnumRoles")]
+    partial class AddedEnumRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +51,8 @@ namespace Practice.API.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<int>("userRoles")
                         .HasColumnType("int");

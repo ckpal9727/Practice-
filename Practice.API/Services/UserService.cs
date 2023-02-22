@@ -28,13 +28,25 @@ namespace Practice.API.Services
             
         }
 
-        public async Task LoginUser(UserDto userDto)
+        public async Task<UserDto> GetSingleUser(string email)
         {
-            /*            if(userDto!=null)
-                        {
-                            var DecryptPassword=
-                        }*/
-            await infoContext.User.AddAsync(mapper.Map<Users>(userDto));
+            var ExistUser=await infoContext.User.FirstOrDefaultAsync<Users>(s=>s.Email==email);
+            return mapper.Map<UserDto>(ExistUser);
+        }
+
+        public async Task<bool> LoginUser(string email, string password)
+        {
+           UserDto ExistUser=await GetSingleUser(email); 
+            if(ExistUser!=null)
+            {
+                var DecodePassword=CommonMethod.ConvertToDecrypt(ExistUser.Password);
+                if(DecodePassword==password)
+                {
+                    return true;
+                }
+            }
+            return false;
+
         }
 
         public async Task<bool> SaveChangesAsync()

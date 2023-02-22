@@ -6,7 +6,8 @@ namespace Practice.API.Profiles
     {
         public User()
         {
-            CreateMap<Model.UserDto, Entities.Users>().ReverseMap();
+            CreateMap<Model.UserDto, Entities.Users>();
+            CreateMap<Entities.Users, Model.UserDto>();
         }
     }
 }

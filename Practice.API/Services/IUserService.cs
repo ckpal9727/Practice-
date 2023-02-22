@@ -4,8 +4,9 @@ namespace Practice.API.Services
 {
     public interface IUserService
     {
+        Task<UserDto> GetSingleUser(string username);
         Task CreateUser(UserDto userDto);
-        Task LoginUser(UserDto userDto);
+        Task<bool> LoginUser(string email,string password);
         Task<bool> SaveChangesAsync();
     }
 }

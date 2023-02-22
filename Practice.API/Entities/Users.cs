@@ -18,13 +18,15 @@ namespace Practice.API.Entities
         [MaxLength(35)]
         public string Email { get; set; }
         [Required]
-        [MaxLength(8)]
-        [MinLength(8)]
+
         public string Password { get; set; }
         [Required]
         [MaxLength(10)]
+        [MinLength(10)]
         public string Mobile { get; set; }
         public bool IsAdmin { get; set; } = false;
+
+        public UserRoles userRoles { get; set; }
 
         //Remaining Work For Email Validation
         bool ValidateMail()
