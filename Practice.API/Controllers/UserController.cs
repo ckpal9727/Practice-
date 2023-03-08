@@ -7,7 +7,7 @@ using Practice.API.Services;
 
 namespace Practice.API.Controllers
 {
-    [Route("/user")]
+    [Route("user")]
     [ApiController]
 
     public class UserController:ControllerBase
@@ -40,9 +40,14 @@ namespace Practice.API.Controllers
 
         
         [HttpPost("login")]
-        public async Task<bool> Login(string emailId,string password)
+        public async Task<bool> Login(UserLoginDto userLoginDto)
         {
-            return await userService.LoginUser(emailId, password);
+            return await userService.LoginUser(userLoginDto.Email, userLoginDto.Password);
+        }
+        [HttpGet("getfakedata")]
+        public async Task<IActionResult> GetData()
+        {
+            return Ok("data");
         }
 
     }
