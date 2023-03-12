@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
+using Practice.API.Enums;
 
 namespace Practice.API.Entities
 {
@@ -9,14 +10,19 @@ namespace Practice.API.Entities
         
 
         [Key]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int UserId { get; set; }
         [Required]
         [MaxLength(20)]
         [MinLength(3)]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         [Required]
         [MaxLength(35)]
         public string Email { get; set; }
+        public string Gender { get; set; }
+        public string CreatedAt { get; set; }
+        public string UpdatedAt { get; set;}
         [Required]
 
         public string Password { get; set; }
@@ -24,30 +30,9 @@ namespace Practice.API.Entities
         [MaxLength(10)]
         [MinLength(10)]
         public string Mobile { get; set; }
-        public bool IsAdmin { get; set; } = false;
-
         public UserRoles userRoles { get; set; }
 
-        //Remaining Work For Email Validation
-        bool ValidateMail()
-        {
-            if (Email== null)
-            {
-
-            }
-            var mail = new MailAddress(Email);
-            bool isValidEmail = mail.Host.Contains(".");
-            if (!isValidEmail)
-            {
-               return false;
-            }
-            else
-            {
-                return true;
-            }
-
-            
-        }
+       
         
     }
 }

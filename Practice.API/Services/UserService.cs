@@ -1,9 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Practice.API.Common;
 using Practice.API.DbContexts;
 using Practice.API.Entities;
 using Practice.API.Model;
+using Practice.API.Profiles;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Practice.API.Services
 {
@@ -11,11 +17,13 @@ namespace Practice.API.Services
     {
         private readonly InfoContext infoContext;
         private readonly IMapper mapper;
+        private readonly IConfiguration configuration;
 
-        public UserService(InfoContext infoContext,IMapper mapper)
+        public UserService(InfoContext infoContext,IMapper mapper,IConfiguration configuration)
         {
             this.infoContext = infoContext ?? throw new ArgumentNullException(nameof(infoContext));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         public async Task CreateUser(UserDto userDto)
         {
@@ -34,20 +42,51 @@ namespace Practice.API.Services
             return mapper.Map<UserDto>(ExistUser);
         }
 
-        public async Task<bool> LoginUser(string email, string password)
+        public async Task<string> LoginUser(string email, string password)
         {
-           UserDto ExistUser=await GetSingleUser(email); 
-            if(ExistUser!=null)
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                var DecodePassword=CommonMethod.ConvertToDecrypt(ExistUser.Password);
-                if(DecodePassword==password)
+                return "Email and password are required.";
+            }
+
+            UserDto ExistUser = await GetSingleUser(email);
+            if (ExistUser != null)
+            {
+                var DecodePassword = CommonMethod.ConvertToDecrypt(ExistUser.Password);
+                if (DecodePassword == password)
                 {
-                    return true;
+                    try
+                    {
+                        var securityKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(configuration["Authentication:SecretForKey"]));
+
+                        var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+                        var claimsForToken = new List<Claim>();
+                        claimsForToken.Add(new Claim("sub", ExistUser.Email));
+                        claimsForToken.Add(new Claim("given_name",ExistUser.Name));
+
+                        var jwtSecurityToken = new JwtSecurityToken(
+                           configuration["Authentication:Issuer"],
+                           configuration["Authentication:Audience"],
+                           claimsForToken,
+                           DateTime.UtcNow,
+                           DateTime.UtcNow.AddHours(1),
+                           signingCredentials);
+
+                        var tokenReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+
+                        return tokenReturn;
+                    }
+                    catch (Exception ex)
+                    {
+                        return  "An error occurred while generating the JWT token.";
+                    }
                 }
             }
-            return false;
 
+            return "Invalid email or password.";
         }
+
 
         public async Task<bool> SaveChangesAsync()
         {

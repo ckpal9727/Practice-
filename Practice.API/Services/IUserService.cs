@@ -6,7 +6,7 @@ namespace Practice.API.Services
     {
         Task<UserDto> GetSingleUser(string username);
         Task CreateUser(UserDto userDto);
-        Task<bool> LoginUser(string email,string password);
+        Task<string> LoginUser(string email,string password);
         Task<bool> SaveChangesAsync();
     }
 }
