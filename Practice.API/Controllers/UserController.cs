@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Practice.API.Model;
 using Practice.API.Services;
@@ -8,6 +9,7 @@ using Practice.API.Services;
 namespace Practice.API.Controllers
 {
     [Route("user")]
+    [Authorize]
     [ApiController]
 
     public class UserController:ControllerBase
@@ -20,30 +22,16 @@ namespace Practice.API.Controllers
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateNewUser(UserDto userDto)
-        {
-            
-            await userService.CreateUser(userDto);
-            await userService.SaveChangesAsync();
-            return userDto;
-        }
-        [HttpGet("/getUser")]
+     
+        [HttpGet("getUser")]
 
-        public async Task<UserDto> GetSingleUser(string email)
+        public async Task<UserDto> GetSingleUser([FromQuery] string email)
         {
             var Data = await userService.GetSingleUser(email);
             return mapper.Map<UserDto>(Data);
-
            
-        }
-
-        
-        [HttpPost("login")]
-        public async Task<bool> Login(UserLoginDto userLoginDto)
-        {
-            return await userService.LoginUser(userLoginDto.Email, userLoginDto.Password);
-        }
+        }       
+       
         [HttpGet("getfakedata")]
         public async Task<IActionResult> GetData()
         {

@@ -1,4 +1,4 @@
-﻿using Practice.API.Entities;
+﻿using Practice.API.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Practice.API.Model

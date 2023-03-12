@@ -132,3 +132,7 @@ D:\Tech Basket\Practice-\Practice.API\obj\Debug\net6.0\refint\Practice.API.dll
 D:\Tech Basket\Practice-\Practice.API\obj\Debug\net6.0\Practice.API.pdb
 D:\Tech Basket\Practice-\Practice.API\obj\Debug\net6.0\Practice.API.genruntimeconfig.cache
 D:\Tech Basket\Practice-\Practice.API\obj\Debug\net6.0\ref\Practice.API.dll
+D:\Tech Basket\Practice-\Practice.API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Tech Basket\Practice-\Practice.API\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Tech Basket\Practice-\Practice.API\obj\Debug\net6.0\Practice.API.Properties.Resources.resources
+D:\Tech Basket\Practice-\Practice.API\obj\Debug\net6.0\Practice.API.csproj.GenerateResource.cache
