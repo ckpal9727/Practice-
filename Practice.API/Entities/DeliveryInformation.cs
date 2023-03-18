@@ -6,13 +6,14 @@ namespace Practice.API.Entities
 {
     public class DeliveryInformation
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DeliveryId { get; set; }
         
         public DeliveryStatus DeliveryStatus { get; set; }
         [Required]
         public string Address { get; set; }
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
-        public Users User { get; set; }
+        public virtual Users User { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using Practice.API.Services;
 
 namespace Practice.API.Controllers
 {
-    [Route("user")]
+    [Route("api/user")]
     [Authorize]
     [ApiController]
 

@@ -9,9 +9,8 @@ namespace Practice.API.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderId { get; set; }
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
-        public Users User { get; set; }
+        public virtual Users User { get; set; }
         public int TotalAmount { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus OrderStatus { get; set; }

@@ -10,9 +10,8 @@ namespace Practice.API.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PaymentId { get; set; }
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
-        public Users User { get; set; }
+        public virtual Users User { get; set; }
         public int amount { get; set; }
         public DateTime PaymentDate { get; set; }
         [Required]

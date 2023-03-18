@@ -11,10 +11,10 @@ namespace Practice.API.Entities
         [Required]
         public string ProductName { get; set; } 
         public string ProductDescription { get; set; }
-        [ForeignKey("CategoryId")]
+       
         public int CategoryId { get; set;}
         
-        public Category Category { get; set; }
+        public  virtual Category Category { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
