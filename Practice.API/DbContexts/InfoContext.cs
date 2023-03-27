@@ -13,7 +13,7 @@ namespace Practice.API.DbContexts
         public DbSet<Payment> Payment { get; set; } 
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Order> Orders { get; set; }
-        //public DbSet<DeliveryInformation> DeliveryInformation { get; set; }
+        public DbSet<DeliveryInformation> DeliveryInformation { get; set; }
         public InfoContext(DbContextOptions<InfoContext> options) : base(options)
         {
 

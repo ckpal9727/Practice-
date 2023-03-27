@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Practice.API.Model;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Practice.API.Entities
@@ -9,13 +10,13 @@ namespace Practice.API.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CartId { get; set; }
        
+        public Guid CartNumber { get; set; }
         public int UserId { get; set; }
         public virtual Users User { get; set; }
 
-        public int ProductId { get; set; }
-        [Required]
-        public virtual  Product Product { get; set; }
-        [Required]
-        public int Quantity { get; set; }
+        public ICollection<Product> Products { get; set; } =new List<Product>();
+       
+
+        
     }
 }

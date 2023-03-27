@@ -12,8 +12,8 @@ using Practice.API.DbContexts;
 namespace Practice.API.Migrations
 {
     [DbContext(typeof(InfoContext))]
-    [Migration("20230318140705_AddedAllTableInDBSet")]
-    partial class AddedAllTableInDBSet
+    [Migration("20230319160050_FixtCartAddProduct")]
+    partial class FixtCartAddProduct
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,18 +32,13 @@ namespace Practice.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"), 1L, 1);
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CartNumber")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("CartId");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -72,6 +67,31 @@ namespace Practice.API.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Practice.API.Entities.DeliveryInformation", b =>
+                {
+                    b.Property<int>("DeliveryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeliveryId"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DeliveryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DeliveryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DeliveryInformation");
+                });
+
             modelBuilder.Entity("Practice.API.Entities.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -79,6 +99,9 @@ namespace Practice.API.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"), 1L, 1);
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -89,12 +112,9 @@ namespace Practice.API.Migrations
                     b.Property<int>("TotalAmount")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("OrderId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CartId");
 
                     b.ToTable("Orders");
                 });
@@ -138,12 +158,11 @@ namespace Practice.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"), 1L, 1);
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -160,6 +179,8 @@ namespace Practice.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ProductId");
+
+                    b.HasIndex("CartId");
 
                     b.HasIndex("CategoryId");
 
@@ -219,24 +240,16 @@ namespace Practice.API.Migrations
 
             modelBuilder.Entity("Practice.API.Entities.Cart", b =>
                 {
-                    b.HasOne("Practice.API.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Practice.API.Entities.Users", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
-
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Practice.API.Entities.Order", b =>
+            modelBuilder.Entity("Practice.API.Entities.DeliveryInformation", b =>
                 {
                     b.HasOne("Practice.API.Entities.Users", "User")
                         .WithMany()
@@ -245,6 +258,17 @@ namespace Practice.API.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Practice.API.Entities.Order", b =>
+                {
+                    b.HasOne("Practice.API.Entities.Cart", "Cart")
+                        .WithMany()
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("Practice.API.Entities.Payment", b =>
@@ -260,6 +284,10 @@ namespace Practice.API.Migrations
 
             modelBuilder.Entity("Practice.API.Entities.Product", b =>
                 {
+                    b.HasOne("Practice.API.Entities.Cart", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CartId");
+
                     b.HasOne("Practice.API.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
@@ -267,6 +295,11 @@ namespace Practice.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Practice.API.Entities.Cart", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,6 +17,7 @@ namespace Practice.API.Services
         public async Task<Category> AddCategory(Category category)
         {
             await infoContext.Categories.AddAsync(category);
+            await infoContext.SaveChangesAsync();
             return category;
         }
 
@@ -34,6 +35,7 @@ namespace Practice.API.Services
         public async Task<Category> UpdateCategory(Category category)
         {
             infoContext.Categories.Update(category);
+            await infoContext.SaveChangesAsync();
             return category;
         }
     }

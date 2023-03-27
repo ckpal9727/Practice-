@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Practice.API.Entities;
+using Practice.API.Model;
 using Practice.API.Services;
 
 namespace Practice.API.Controllers
@@ -18,27 +19,32 @@ namespace Practice.API.Controllers
             this.categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
         }
         [HttpPost]
-        public async Task<ActionResult<CategoryController>> AddCategory(Category category)
+        public async Task<ActionResult<Category>> AddCategory(AddCategoryModel category)
         {
             if (category != null)
             {
-                return Ok(await categoryService.AddCategory(category));
+                var addeCategory=await categoryService.AddCategory(mapper.Map<Category>(category));
+                if(addeCategory != null)
+                {
+                    return Ok(addeCategory);
+                }
+                return Ok("Not Added");
             }
             return null;
         }
         [HttpPut("categoryId")]
 
-        public async Task<ActionResult<CategoryController>> UpdateCategory(Category category,int categoryId)
+        public async Task<ActionResult<Category>> UpdateCategory(AddCategoryModel addCategoryModel,int categoryId)
         {
             var existCategory = await categoryService.GetCategory(categoryId);
             if (existCategory != null)
             {
-                return Ok(await categoryService.UpdateCategory(category));
+                return Ok(await categoryService.UpdateCategory(mapper.Map(addCategoryModel,existCategory)));
             }
             return null;
         }
         [HttpGet("categoryId")]
-        public async Task<ActionResult<CategoryController>> GetCategory( int categoryId)
+        public async Task<ActionResult<Category>> GetCategory( int categoryId)
         {           
             if (categoryId != null)
             {

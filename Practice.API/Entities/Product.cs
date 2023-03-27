@@ -15,11 +15,19 @@ namespace Practice.API.Entities
         public int CategoryId { get; set;}
         
         public  virtual Category Category { get; set; }
-        [Required]
-        public string Description { get; set; }
+        
         [Required]
         public int Price { get; set; }
         [Required]
         public int Quantity { get; set; }
+
+        private decimal _total;
+        public decimal Total { get { return _total; } set { _total = value; } }
+        public Product()
+        {
+            _total = Price * Quantity;
+        }
+        
+       
     }
 }

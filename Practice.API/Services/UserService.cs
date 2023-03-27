@@ -64,6 +64,7 @@ namespace Practice.API.Services
                         var claimsForToken = new List<Claim>();
                         claimsForToken.Add(new Claim("sub", ExistUser.Email));
                         claimsForToken.Add(new Claim("given_name",ExistUser.Password));
+                        claimsForToken.Add(new Claim("user_role",ExistUser.userRoles.ToString()));
 
                         var jwtSecurityToken = new JwtSecurityToken(
                            configuration["Authentication:Issuer"],

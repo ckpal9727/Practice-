@@ -4,7 +4,7 @@
 
 namespace Practice.API.Migrations
 {
-    public partial class UpgradeForeignKeyStyleToVirtual : Migration
+    public partial class FixtCartAddProduct : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

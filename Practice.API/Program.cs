@@ -44,6 +44,10 @@ builder.Services.AddDbContext<InfoContext>(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //Adding Service
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<ICategoryService,CategoryService>();
+builder.Services.AddScoped<IProductService,ProductService>();
+builder.Services.AddScoped<ICartService,CartService>();
+builder.Services.AddScoped<IOrderService,OrderService>();
 
 //Adding Authentication token
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>

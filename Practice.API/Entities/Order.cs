@@ -9,8 +9,9 @@ namespace Practice.API.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderId { get; set; }
-        public int UserId { get; set; }
-        public virtual Users User { get; set; }
+       
+        public int CartId { get; set; }
+        public virtual Cart Cart { get; set; }
         public int TotalAmount { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
